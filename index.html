@@ -444,7 +444,7 @@ function renderSchedule() {
     <tr class="${item.done ? "done-row" : ""}">
       <td class="daydate">${escapeHTML(dateLabel(item.date))}</td>
       <td class="phone">${escapeHTML(item.phone)}</td>
-      <td>${item.fire ? '<span class="fire">🔥</span>' : "—"}</td>
+      <td>${item.fire ? '<span class="fire"></span>' : "—"}</td>
       <td>
         <label>
           <input class="check" type="checkbox"
