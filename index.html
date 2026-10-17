@@ -1,74 +1,191 @@
-<!doctype html>
+
+<!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="دليل المعارض ومراكز الصيانة - SHOKR">
-  <title>SHOKR | دليل المعارض والصيانة</title>
-  <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>متابعة هدف أحمد شكر</title>
+<style>
+:root{--bg:#0b1220;--card:#151f32;--line:#2b3951;--text:#f4f7fb;--muted:#aab7ca;--green:#25c685;--red:#ff6474;--blue:#63a8ff}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:Arial,sans-serif;padding:16px}
+.container{max-width:950px;margin:auto}
+h1{text-align:center;font-size:25px;margin:12px 0}
+.sub{text-align:center;color:var(--muted);margin-bottom:20px}
+.cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.card,.panel{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:15px;margin-bottom:12px}
+.label{color:var(--muted);font-size:13px}
+.value{font-size:23px;font-weight:bold;margin-top:8px;overflow-wrap:anywhere}
+.green{color:var(--green)}.red{color:var(--red)}.blue{color:var(--blue)}
+.progress{height:12px;background:#27354b;border-radius:20px;overflow:hidden;margin-top:12px}
+.bar{height:100%;width:0;background:var(--green);transition:width .2s}
+h2{font-size:18px;margin-top:4px}
+table{width:100%;border-collapse:collapse;min-width:700px}
+th,td{border-bottom:1px solid var(--line);padding:10px 7px;text-align:center}
+th{color:var(--muted);font-size:13px}
+input{background:#0b1220;color:white;border:1px solid var(--line);border-radius:8px;padding:9px;width:75px;text-align:center}
+input[type=date]{width:145px}
+.table-wrap{overflow-x:auto}
+button{border:0;border-radius:9px;padding:11px 14px;font-weight:bold;cursor:pointer;margin:4px}
+.primary{background:var(--green);color:#062319}
+.secondary{background:#263751;color:white}
+.danger{background:#632b39;color:white}
+.actions{display:flex;flex-wrap:wrap;gap:5px;margin-top:12px}
+.note{font-size:13px;color:var(--muted);line-height:1.8}
+.status{font-weight:bold;white-space:nowrap}
+@media(max-width:480px){body{padding:10px}.value{font-size:20px}.card{padding:12px}}
+</style>
 </head>
 <body>
-  <header class="topbar">
-    <a class="brand" href="#"><span class="brand-mark">S</span><span>SHOKR<small>DEALER DIRECTORY</small></span></a>
-    <button class="menu-toggle" id="menuToggle" aria-label="فتح القائمة">☰</button>
-    <nav id="nav"><a href="#find">ابحث عن معرض</a><a href="#services">الخدمات</a><a href="#about">عن الموقع</a></nav>
-  </header>
+<div class="container">
+<h1>متابعة هدف أحمد شكر</h1>
+<div class="sub">سجّل عملياتك كل يوم واعرف وصلت لفين</div>
 
-  <main>
-    <section class="hero">
-      <div class="hero-content">
-        <span class="eyebrow">دليل المعارض ومراكز الصيانة</span>
-        <h1>اعثر على وجهتك<br><em>بكل سهولة.</em></h1>
-        <p>ابحث عن المعارض ومراكز الخدمة حسب المحافظة، واعرف بيانات التواصل قبل ما تتحرك.</p>
-        <a class="primary-btn" href="#find">ابدأ البحث <span>←</span></a>
-      </div>
-      <div class="hero-art" aria-hidden="true">
-        <div class="ring ring-one"></div><div class="ring ring-two"></div>
-        <div class="pin">⌖</div>
-        <div class="art-label">YOUR NEXT<br><b>DESTINATION</b></div>
-      </div>
-    </section>
+<div class="cards">
+  <div class="card"><div class="label">الهدف الكلي</div><div class="value">11,500 ج.م</div></div>
+  <div class="card"><div class="label">المكسب الفعلي</div><div class="value green" id="total">0 ج.م</div></div>
+  <div class="card"><div class="label">المتبقي للهدف</div><div class="value blue" id="remaining">11,500 ج.م</div></div>
+  <div class="card"><div class="label">نسبة الإنجاز</div><div class="value" id="percent">0%</div><div class="progress"><div class="bar" id="bar"></div></div></div>
+</div>
 
-    <section class="search-section" id="find">
-      <div class="section-heading">
-        <div><span class="eyebrow">بحث سريع</span><h2>أقرب معرض ليك</h2></div>
-        <span class="results-count" id="resultCount">3 أماكن تجريبية</span>
-      </div>
-      <div class="search-panel">
-        <label>المحافظة
-          <select id="governorate">
-            <option value="">كل المحافظات</option>
-            <option>شمال سيناء</option><option>القاهرة</option><option>الجيزة</option><option>الإسكندرية</option><option>الشرقية</option>
-          </select>
-        </label>
-        <label>نوع المكان
-          <select id="placeType">
-            <option value="">الكل</option><option value="sales">معرض بيع</option><option value="service">مركز صيانة</option>
-          </select>
-        </label>
-        <button class="primary-btn search-btn" id="searchBtn">عرض النتائج</button>
-      </div>
-      <div class="notice"><strong>ملاحظة:</strong> البيانات المعروضة حاليًا أمثلة تجريبية وليست فروعًا حقيقية. أضف بيانات معارضك المعتمدة قبل نشر الموقع للزوار.</div>
-      <div class="results-grid" id="results"></div>
-    </section>
+<div class="panel">
+<h2>إعدادات الخطة</h2>
+<div class="actions">
+<label>ربح خصم النظام: <input id="systemProfit" type="number" min="0" value="95"></label>
+<label>ربح الميني باك: <input id="miniProfit" type="number" min="0" value="300"></label>
+<label>الهدف: <input id="goal" type="number" min="1" value="11500"></label>
+</div>
+<p class="note">الخطة الحسابية: 16 عملية ميني باك × 300 = 4,800 جنيه، و71 عملية خصم نظام × 95 = 6,745 جنيه. الإجمالي المتوقع 11,545 جنيه، أي أعلى من الهدف بـ45 جنيه.</p>
+</div>
 
-    <section class="services" id="services">
-      <span class="eyebrow">خدمات الدليل</span>
-      <h2>كل المعلومات في مكان واحد</h2>
-      <div class="service-grid">
-        <article><div class="service-icon">⌖</div><h3>مواقع الفروع</h3><p>اعرف عنوان المكان وافتح الاتجاهات على الخريطة.</p></article>
-        <article><div class="service-icon">☎</div><h3>تواصل مباشر</h3><p>اتصل بالمعرض للاستفسار عن المواعيد والتوافر.</p></article>
-        <article><div class="service-icon">⚙</div><h3>بيع وصيانة</h3><p>فلتر النتائج حسب نوع الخدمة التي تبحث عنها.</p></article>
-      </div>
-    </section>
+<div class="panel">
+<h2>جدول الـ13 يوم</h2>
+<p class="note">غيّر التاريخ لو محتاج. عدّل العدد الفعلي بعد ما تخلص عملياتك. الزيادة أو العجز بيتحسب تلقائيًا.</p>
+<div class="table-wrap">
+<table>
+<thead><tr>
+<th>اليوم</th><th>التاريخ</th><th>هدف النظام</th><th>فعلي النظام</th><th>هدف الميني</th><th>فعلي الميني</th><th>الفرق</th><th>المكسب</th>
+</tr></thead>
+<tbody id="rows"></tbody>
+</table>
+</div>
+<div class="actions">
+<button class="primary" onclick="exportCSV()">تصدير الجدول CSV</button>
+<button class="secondary" onclick="copySummary()">نسخ الملخص</button>
+<button class="danger" onclick="resetData()">مسح بيانات المتابعة</button>
+</div>
+</div>
+<div class="panel">
+<h2>ملخص الأداء</h2>
+<div id="summary" class="note"></div>
+</div>
+<p class="note">البيانات محفوظة في المتصفح على نفس الجهاز. لا تمسح بيانات المتصفح إذا كنت تريد الاحتفاظ بالمتابعة.</p>
+</div>
 
-    <section class="about" id="about">
-      <div><span class="eyebrow">عن SHOKR</span><h2>دليل واضح، وتجربة أبسط.</h2></div>
-      <p>يمكن تخصيص هذا الموقع باسم مشروعك، وإضافة بيانات الفروع الحقيقية وروابط الخرائط ووسائل التواصل. لا يمثل الموقع شركة SYM ولا يتبع لها رسميًا.</p>
-    </section>
-  </main>
+<script>
+const KEY="ahmed_shokr_goal_tracker_v1";
+const systemPlan=[6,5,6,5,5,6,5,5,4,5,6,6,7];
+const miniPlan=[1,1,1,1,1,1,1,1,1,1,1,2,3];
+let data;
+function defaultData(){
+  const start=new Date(2026,9,17);
+  return {
+    systemProfit:95,miniProfit:300,goal:11500,
+    days:Array.from({length:13},(_,i)=>{
+      const d=new Date(start);d.setDate(start.getDate()+i);
+      return {date:d.toISOString().slice(0,10),systemTarget:systemPlan[i],
+      systemActual:0,miniTarget:miniPlan[i],miniActual:0};
+    })
+  };
+}
+function load(){
+  try{
+    const saved=JSON.parse(localStorage.getItem(KEY));
+    if(saved && Array.isArray(saved.days) && saved.days.length===13)return saved;
+  }catch(e){}
+  return defaultData();
+}
+data=load();
+const $=id=>document.getElementById(id);
+$("systemProfit").value=data.systemProfit;
+$("miniProfit").value=data.miniProfit;
+$("goal").value=data.goal;
 
-  <footer><a class="brand footer-brand" href="#"><span class="brand-mark">S</span><span>SHOKR<small>DEALER DIRECTORY</small></span></a><span>© <span id="year"></span> SHOKR. جميع الحقوق محفوظة.</span></footer>
-  <script src="script.js"></script>
+function save(){localStorage.setItem(KEY,JSON.stringify(data));}
+function num(v){return Math.max(0,Number(v)||0);}
+function money(v){return Math.round(v).toLocaleString("en-US")+" ج.م";}
+function render(){
+  $("rows").innerHTML=data.days.map((d,i)=>{
+    const diff=(d.systemActual-d.systemTarget)+(d.miniActual-d.miniTarget);
+    const profit=d.systemActual*num(data.systemProfit)+d.miniActual*num(data.miniProfit);
+    const status=diff>0?`<span class="green status">زيادة +${diff}</span>`:
+      diff<0?`<span class="red status">عجز ${diff}</span>`:
+      `<span class="status">مطابق</span>`;
+    return `<tr>
+    <td>${i+1}</td>
+    <td><input type="date" value="${d.date}" onchange="edit(${i},'date',this.value)"></td>
+    <td><input type="number" min="0" value="${d.systemTarget}" onchange="edit(${i},'systemTarget',this.value)"></td>
+    <td><input type="number" min="0" value="${d.systemActual}" onchange="edit(${i},'systemActual',this.value)"></td>
+    <td><input type="number" min="0" value="${d.miniTarget}" onchange="edit(${i},'miniTarget',this.value)"></td>
+    <td><input type="number" min="0" value="${d.miniActual}" onchange="edit(${i},'miniActual',this.value)"></td>
+    <td>${status}</td><td>${money(profit)}</td></tr>`;
+  }).join("");
+  const total=data.days.reduce((s,d)=>s+d.systemActual*num(data.systemProfit)+d.miniActual*num(data.miniProfit),0);
+  const goal=num(data.goal),remaining=goal-total,pct=goal?total/goal*100:0;
+  $("total").textContent=money(total);
+  $("remaining").textContent=remaining>0?money(remaining):"تجاوزت الهدف بـ "+money(-remaining);
+  $("percent").textContent=Math.max(0,pct).toFixed(1)+"%";
+  $("bar").style.width=Math.min(100,Math.max(0,pct))+"%";
+  const systemActual=data.days.reduce((s,d)=>s+num(d.systemActual),0);
+  const miniActual=data.days.reduce((s,d)=>s+num(d.miniActual),0);
+  const systemTarget=data.days.reduce((s,d)=>s+num(d.systemTarget),0);
+  const miniTarget=data.days.reduce((s,d)=>s+num(d.miniTarget),0);
+  $("summary").innerHTML=`عمليات خصم النظام: <b>${systemActual}</b> من ${systemTarget} (الفرق ${systemActual-systemTarget>=0?"+":""}${systemActual-systemTarget})<br>
+  عمليات الميني باك: <b>${miniActual}</b> من ${miniTarget} (الفرق ${miniActual-miniTarget>=0?"+":""}${miniActual-miniTarget})<br>
+  إجمالي العمليات الفعلية: <b>${systemActual+miniActual}</b><br>
+  المكسب الفعلي: <b>${money(total)}</b><br>
+  ${remaining>0?"المبلغ المطلوب لتحقيق الهدف: "+money(remaining):"مبروك، حققت الهدف أو تجاوزته."}`;
+  save();
+}
+window.edit=(i,key,value)=>{
+  if(key==="date")data.days[i][key]=value;
+  else data.days[i][key]=num(value);
+  render();
+};
+["systemProfit","miniProfit","goal"].forEach(id=>{
+  $(id).addEventListener("change",()=>{
+    data[id]=num($(id).value);render();
+  });
+});
+window.resetData=()=>{
+  if(confirm("متأكد إنك عايز تمسح المتابعة وترجعها من البداية؟")){
+    data=defaultData();
+    $("systemProfit").value=data.systemProfit;
+    $("miniProfit").value=data.miniProfit;
+    $("goal").value=data.goal;
+    render();
+  }
+};
+window.exportCSV=()=>{
+  const lines=[["اليوم","التاريخ","هدف النظام","فعلي النظام","هدف الميني","فعلي الميني","الفرق","المكسب"]];
+  data.days.forEach((d,i)=>{
+    const diff=(d.systemActual-d.systemTarget)+(d.miniActual-d.miniTarget);
+    const profit=d.systemActual*num(data.systemProfit)+d.miniActual*num(data.miniProfit);
+    lines.push([i+1,d.date,d.systemTarget,d.systemActual,d.miniTarget,d.miniActual,diff,profit]);
+  });
+  const csv="\uFEFF"+lines.map(r=>r.join(",")).join("\n");
+  const blob=new Blob([csv],{type:"text/csv;charset=utf-8;"});
+  const url=URL.createObjectURL(blob),a=document.createElement("a");
+  a.href=url;a.download="ahmed-shokr-tracker.csv";a.click();URL.revokeObjectURL(url);
+};
+window.copySummary=()=>{
+  const total=data.days.reduce((s,d)=>s+d.systemActual*num(data.systemProfit)+d.miniActual*num(data.miniProfit),0);
+  const txt=`متابعة أحمد شكر\nالمكسب الفعلي: ${money(total)}\nالهدف: ${money(num(data.goal))}\n${total>=num(data.goal)?"تجاوز الهدف بـ "+money(total-num(data.goal)):"المتبقي: "+money(num(data.goal)-total)}`;
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(txt).then(()=>alert("تم نسخ الملخص")).catch(()=>prompt("انسخ الملخص:",txt));
+  }else prompt("انسخ الملخص:",txt);
+};
+render();
+</script>
 </body>
 </html>
