@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>متابعة هدف أحمد شكر</title>
+<style>
+:root{
+  --bg:#0b1220;--card:#151f32;--line:#2b3951;
+  --text:#f4f7fb;--muted:#aab7ca;--green:#25c685;
+  --red:#ff6474;--blue:#63a8ff
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:Arial,sans-serif;padding:12px}
+.container{max-width:1100px;margin:auto}
+h1{text-align:center;font-size:25px;margin:14px 0}
+h2{font-size:18px;margin-top:4px}
+.sub{text-align:center;color:var(--muted);margin-bottom:20px}
+.cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.card,.panel{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:15px;margin-bottom:12px}
+.label{color:var(--muted);font-size:13px}
+.value{font-size:23px;font-weight:bold;margin-top:8px;overflow-wrap:anywhere}
+.green{color:var(--green)}
+.red{color:var(--red)}
+.blue{color:var(--blue)}
+.progress{height:12px;background:#27354b;border-radius:20px;overflow:hidden;margin-top:12px}
+.bar{height:100%;width:0;background:var(--green);transition:width .2s}
+table{width:100%;border-collapse:collapse;min-width:650px}
+th,td{border-bottom:1px solid var(--line);padding:10px 7px;text-align:center}
+th{color:var(--muted);font-size:13px}
+input,select,textarea{background:#0b1220;color:white;border:1px solid var(--line);border-radius:8px;padding:9px;max-width:100%}
+input[type=number]{width:85px;text-align:center}
+input[type=date]{width:150px}
+input[type=text]{width:100%}
+.table-wrap{overflow-x:auto}
+button{border:0;border-radius:9px;padding:11px 14px;font-weight:bold;cursor:pointer;margin:4px}
+.primary{background:var(--green);color:#062319}
+.secondary{background:#263751;color:white}
+.danger{background:#632b39;color:white}
+.actions{display:flex;flex-wrap:wrap;gap:5px;margin-top:12px}
+.note{font-size:13px;color:var(--muted);line-height:1.8}
+.status{font-weight:bold;white-space:nowrap}
+.fields{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px}
+.fields label{display:block;color:var(--muted);font-size:14px}
+.fields input,.fields select,.fields textarea{display:block;margin-top:7px;width:100%}
+.phone{direction:ltr;white-space:nowrap;font-variant-numeric:tabular-nums}
+.fire{color:#ff8b48}
+.done-row{background:#102b27}
+.check{width:20px;height:20px;accent-color:#25c685}
+.daydate{line-height:1.7;white-space:nowrap}
+@media(max-width:480px){
+ body{padding:9px}
+ .value{font-size:19px}
+ .card,.panel{padding:11px}
+ h1{font-size:22px}
+}
+</style>
+</head>
+<body>
+<div class="container">
+<h1>متابعة هدف أحمد شكر</h1>
+<div class="sub">الميني باك في مواعيده وخصم النظام في باقي الأيام</div>
+
+<div class="cards">
+  <div class="card"><div class="label">الهدف الكلي</div><div class="value" id="goalDisplay">11,500 ج.م</div></div>
+  <div class="card"><div class="label">صافي المكسب بعد المصاريف</div><div class="value green" id="total">0 ج.م</div></div>
+  <div class="card"><div class="label">المتبقي للهدف</div><div class="value blue" id="remaining">11,500 ج.م</div></div>
+  <div class="card"><div class="label">نسبة الإنجاز</div><div class="value" id="percent">0%</div><div class="progress"><div class="bar" id="bar"></div></div></div>
+</div>
+
+<div class="panel">
+<h2>⚙️ إعدادات الخطة</h2>
+<div class="fields">
+  <label>ربح خصم النظام (جنيه)<input id="systemProfit" type="number" min="0" step="0.01" value="95"></label>
+  <label>ربح الميني باك (جنيه)<input id="miniProfit" type="number" min="0" step="0.01" value="300"></label>
+  <label>الهدف المالي (جنيه)<input id="goal" type="number" min="1" step="1" value="11500"></label>
+</div>
+<p class="note">بداية المتابعة: السبت 17 أكتوبر 2026.<br>الأيام التي بها ميني باك مخصصة له، وباقي الأيام مخصصة لخصم النظام.</p>
+</div>
+
+<div class="panel">
+<h2>📱 جدول مواعيد الميني باك</h2>
+<p class="note">المواعيد حسب قائمتك، مع تغيير الشهر من 8 إلى 10. علّم على «تم» بعد تنفيذ كل عملية. العدد الفعلي للميني باك سيتحسب تلقائيًا في الجدول اليومي.</p>
+<div class="cards">
+  <div class="card"><div class="label">إجمالي أرقام الميني باك</div><div class="value" id="miniScheduledCount">16</div></div>
+  <div class="card"><div class="label">عمليات الميني باك المنفذة</div><div class="value green" id="miniDoneCount">0</div></div>
+</div>
+<div class="table-wrap"><table><thead><tr><th>اليوم والتاريخ</th><th>رقم الموبايل</th><th>ملاحظة</th><th>تم التنفيذ؟</th></tr></thead><tbody id="miniScheduleRows"></tbody></table></div>
+</div>
+
+<div class="panel">
+<h2>📅 جدول المتابعة اليومي — 13 يومًا</h2>
+<div class="table-wrap"><table><thead><tr><th>اليوم والتاريخ</th><th>هدف النظام</th><th>فعلي النظام</th><th>هدف الميني</th><th>فعلي الميني</th><th>الفرق</th><th>مكسب اليوم</th></tr></thead><tbody id="rows"></tbody></table></div>
+<p class="note">في أيام الميني باك، عدد الهدف مأخوذ من قائمة الأرقام أعلاه. في الأيام الأخرى، يظهر هدف خصم النظام. يمكنك تعديل الأهداف والأعداد الفعلية.</p>
+<div class="actions"><button class="primary" type="button" onclick="exportCSV()">تصدير CSV</button><button class="secondary" type="button" onclick="copySummary()">نسخ الملخص</button></div>
+</div>
+
+<div class="panel">
+<h2>💰 الدخل الإضافي</h2>
+<p class="note">سجّل أي مكسب آخر، مثل بيع الباقات أو شغل إضافي.</p>
+<div class="fields">
+  <label>مصدر الدخل<input id="extraSource" type="text" maxlength="100" placeholder="مثلاً: بيع باقات"></label>
+  <label>التاريخ<input id="extraDate" type="date"></label>
+  <label>المبلغ بالجنيه<input id="extraAmount" type="number" min="0.01" step="0.01" placeholder="مثلاً: 500"></label>
+</div>
+<div class="actions"><button class="primary" type="button" onclick="addExtraIncome()">إضافة الدخل</button></div>
+<p>إجمالي الدخل الإضافي: <strong class="green" id="extraTotal">0 ج.م</strong></p>
+<div class="table-wrap"><table style="min-width:500px"><thead><tr><th>التاريخ</th><th>المصدر</th><th>المبلغ</th><th>حذف</th></tr></thead><tbody id="extraRows"></tbody></table></div>
+<p class="note" id="extraEmpty">لم يتم تسجيل دخل إضافي حتى الآن.</p>
+</div>
+
+<!-- قسم المصاريف الجديد -->
+<div class="panel">
+<h2>💸 المصاريف</h2>
+<p class="note">سجّل مصاريفك هنا. إجمالي المصاريف بيتخصم تلقائيًا من المكسب عند حساب صافي المكسب والمتبقي من الهدف.</p>
+<div class="fields">
+  <label>نوع المصروف
+    <select id="expenseCategory">
+      <option value="أكل وشرب">أكل وشرب</option><option value="مواصلات">مواصلات</option><option value="فواتير">فواتير</option><option value="مشتريات">مشتريات</option><option value="الجيم">الجيم</option><option value="تعليم">تعليم</option><option value="شخصي">شخصي</option><option value="أخرى">أخرى</option>
+    </select>
+  </label>
+  <label>التاريخ<input id="expenseDate" type="date"></label>
+  <label>المبلغ بالجنيه<input id="expenseAmount" type="number" min="0.01" step="0.01" placeholder="المبلغ"></label>
+  <label>الملاحظات<input id="expenseNotes" type="text" maxlength="200" placeholder="تفاصيل المصروف"></label>
+</div>
+<div class="actions"><button class="primary" type="button" onclick="addExpense()">إضافة المصروف</button></div>
+<p>إجمالي المصاريف: <strong class="red" id="expenseTotal">0 ج.م</strong></p>
+<div class="table-wrap"><table style="min-width:600px"><thead><tr><th>التاريخ</th><th>النوع</th><th>الملاحظات</th><th>المبلغ</th><th>حذف</th></tr></thead><tbody id="expenseRows"></tbody></table></div>
+<p class="note" id="expenseEmpty">لم يتم تسجيل مصاريف حتى الآن.</p>
+</div>
+
+<div class="panel"><h2>📊 ملخص الأداء</h2><div id="summary" class="note"></div></div>
+<div class="panel"><h2>⚠️ إدارة البيانات</h2><p class="note">البيانات محفوظة في المتصفح على نفس الجهاز. احتفظ بنسخة CSV من وقت لآخر.</p><button class="danger" type="button" onclick="resetData()">إعادة تعيين المتابعة</button></div>
+<footer class="note" style="text-align:center;padding:12px">Ahmed Shokr — Goal Tracker</footer>
+</div>
+
+<script>
+"use strict";
+const KEY = "ahmed_shokr_goal_tracker_v3";
+const OLD_KEYS = ["ahmed_shokr_goal_tracker_v2","ahmed_shokr_goal_tracker_v1"];
+const START_DATE = "2026-10-17";
+
+const miniScheduleDefaults = [
+  {phone:"01012639004",date:"2026-10-18",fire:true},
+  {phone:"01096418486",date:"2026-10-20",fire:false},
+  {phone:"01097615274",date:"2026-10-21",fire:false},
+  {phone:"01021468509",date:"2026-10-21",fire:true},
+  {phone:"01042408768",date:"2026-10-21",fire:false},
+  {phone:"01039684101",date:"2026-10-23",fire:false},
+  {phone:"01041138562",date:"2026-10-23",fire:true},
+  {phone:"01041170367",date:"2026-10-24",fire:false},
+  {phone:"01041174587",date:"2026-10-24",fire:false},
+  {phone:"01041160584",date:"2026-10-25",fire:false},
+  {phone:"01041175387",date:"2026-10-25",fire:false},
+  {phone:"01041170369",date:"2026-10-25",fire:false},
+  {phone:"01041134165",date:"2026-10-25",fire:false},
+  {phone:"01039705416",date:"2026-10-26",fire:false},
+  {phone:"01041178192",date:"2026-10-26",fire:false},
+  {phone:"01041132567",date:"2026-10-26",fire:false}
+];
+const systemPlan = [6,5,6,5,5,6,5,5,4,5,6,6,7];
+const $ = id => document.getElementById(id);
+
+function localDateString(date) {
+  const y=date.getFullYear(), m=String(date.getMonth()+1).padStart(2,"0"), d=String(date.getDate()).padStart(2,"0");
+  return `${y}-${m}-${d}`;
+}
+function parseLocalDate(value) { const parts=String(value).split("-").map(Number); return new Date(parts[0],parts[1]-1,parts[2]); }
+function dayName(value) { return parseLocalDate(value).toLocaleDateString("ar-EG",{weekday:"long"}); }
+function displayDate(value) { return parseLocalDate(value).toLocaleDateString("en-GB",{day:"2-digit",month:"2-digit",year:"numeric"}); }
+function dateLabel(value) { return dayName(value)+" — "+displayDate(value); }
+function validNumber(value,fallback=0) { const n=Number(value); return Number.isFinite(n)&&n>=0?n:fallback; }
+function num(value) { return validNumber(value,0); }
+function money(value) { return Number(value||0).toLocaleString("en-US",{maximumFractionDigits:2})+" ج.م"; }
+function escapeHTML(value) { return String(value).replace(/[&<>"']/g,char=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"})[char]); }
+
+function defaultData() {
+  const start=parseLocalDate(START_DATE);
+  const days=Array.from({length:13},(_,i)=>{
+    const date=new Date(start); date.setDate(start.getDate()+i); const dateText=localDateString(date);
+    const miniTarget=miniScheduleDefaults.filter(item=>item.date===dateText).length;
+    return {date:dateText,systemTarget:miniTarget>0?0:systemPlan[i],systemActual:0,miniTarget:miniTarget,miniActual:0};
+  });
+  return {systemProfit:95,miniProfit:300,goal:11500,days:days,schedule:miniScheduleDefaults.map((item,index)=>({...item,id:index+1,done:false})),extraIncome:[],expenses:[]};
+}
+
+function normalizeData(saved) {
+  const base=defaultData();
+  saved.systemProfit=validNumber(saved.systemProfit,95);
+  saved.miniProfit=validNumber(saved.miniProfit,300);
+  saved.goal=Math.max(1,validNumber(saved.goal,11500));
+  if(!Array.isArray(saved.extraIncome)) saved.extraIncome=[];
+  saved.extraIncome=saved.extraIncome.filter(item=>item&&typeof item.source==="string"&&typeof item.date==="string"&&Number.isFinite(Number(item.amount))&&Number(item.amount)>0).map((item,index)=>({id:Number(item.id)||Date.now()+index,source:item.source.slice(0,100),date:item.date,amount:Number(item.amount)}));
+
+  // المصاريف الجديدة: لو البيانات القديمة مفيهاش مصاريف، نبدأ بقائمة فارغة من غير ما نغيّر السجلات القديمة.
+  if(!Array.isArray(saved.expenses)) saved.expenses=[];
+  saved.expenses=saved.expenses.filter(item=>item&&typeof item.category==="string"&&typeof item.date==="string"&&Number.isFinite(Number(item.amount))&&Number(item.amount)>0).map((item,index)=>({id:Number(item.id)||Date.now()+index,category:item.category.slice(0,100),date:item.date,notes:String(item.notes||"").slice(0,200),amount:Number(item.amount)}));
+
+  if(!Array.isArray(saved.days)||saved.days.length!==13) saved.days=base.days;
+  else saved.days=saved.days.map((d,i)=>({date:base.days[i].date,systemTarget:validNumber(d.systemTarget,base.days[i].systemTarget),systemActual:validNumber(d.systemActual,0),miniTarget:base.days[i].miniTarget,miniActual:0}));
+  if(!Array.isArray(saved.schedule)) saved.schedule=base.schedule;
+  else saved.schedule=base.schedule.map(item=>{const old=saved.schedule.find(x=>x.phone===item.phone);return {...item,done:old?Boolean(old.done):false};});
+  return saved;
+}
+function load() {
+  try { const current=localStorage.getItem(KEY); if(current) return normalizeData(JSON.parse(current)); for(const oldKey of OLD_KEYS){const old=localStorage.getItem(oldKey);if(old)return normalizeData(JSON.parse(old));} }
+  catch(e){console.warn("تعذر تحميل البيانات المحفوظة.");}
+  return defaultData();
+}
+let data=load();
+function save() { try{localStorage.setItem(KEY,JSON.stringify(data));}catch(e){alert("تعذر حفظ البيانات في المتصفح.");} }
+function scheduledCount(date) { return data.schedule.filter(item=>item.date===date).length; }
+function completedCount(date) { return data.schedule.filter(item=>item.date===date&&item.done).length; }
+function getSystemTarget(date,index) { return scheduledCount(date)>0?0:num(data.days[index].systemTarget); }
+function operationsProfit() { return data.days.reduce((sum,d)=>sum+num(d.systemActual)*num(data.systemProfit)+completedCount(d.date)*num(data.miniProfit),0); }
+function extraIncomeTotal() { return data.extraIncome.reduce((sum,item)=>sum+num(item.amount),0); }
+function expenseTotal() { return data.expenses.reduce((sum,item)=>sum+num(item.amount),0); }
+function totalProfit() { return operationsProfit()+extraIncomeTotal()-expenseTotal(); }
+
+function renderSchedule() {
+  $("miniScheduleRows").innerHTML=data.schedule.map(item=>`<tr class="${item.done?"done-row":""}"><td class="daydate">${escapeHTML(dateLabel(item.date))}</td><td class="phone">${escapeHTML(item.phone)}</td><td>${item.fire?'<span class="fire">🔥</span>':"—"}</td><td><label><input class="check" type="checkbox" ${item.done?"checked":""} aria-label="تم تنفيذ ${escapeHTML(item.phone)}" onchange="toggleMini(${item.id},this.checked)"> ${item.done?'<span class="green">تم</span>':"تم؟"}</label></td></tr>`).join("");
+  $("miniScheduledCount").textContent=data.schedule.length;
+  $("miniDoneCount").textContent=data.schedule.filter(item=>item.done).length;
+}
+function renderDays() {
+  $("rows").innerHTML=data.days.map((d,i)=>{
+    const miniTarget=scheduledCount(d.date),miniActual=completedCount(d.date),systemTarget=getSystemTarget(d.date,i);
+    const diff=(num(d.systemActual)-systemTarget)+(miniActual-miniTarget);
+    const profit=num(d.systemActual)*num(data.systemProfit)+miniActual*num(data.miniProfit);
+    let status;if(diff>0)status=`<span class="green status">زيادة +${diff}</span>`;else if(diff<0)status=`<span class="red status">عجز ${diff}</span>`;else status=`<span class="status">مطابق</span>`;
+    return `<tr><td class="daydate">${i+1}<br>${escapeHTML(dateLabel(d.date))}</td><td>${systemTarget}</td><td><input type="number" min="0" step="1" aria-label="فعلي النظام يوم ${i+1}" value="${num(d.systemActual)}" onchange="editSystem(${i},this.value)"></td><td>${miniTarget}</td><td>${miniActual}</td><td>${status}</td><td>${money(profit)}</td></tr>`;
+  }).join("");
+}
+function renderExtraIncome() {
+  $("extraTotal").textContent=money(extraIncomeTotal());
+  $("extraEmpty").style.display=data.extraIncome.length?"none":"block";
+  $("extraRows").innerHTML=data.extraIncome.map(item=>`<tr><td>${escapeHTML(item.date)}</td><td>${escapeHTML(item.source)}</td><td>${money(item.amount)}</td><td><button class="danger" type="button" onclick="deleteExtraIncome(${Number(item.id)})">حذف</button></td></tr>`).join("");
+}
+function renderExpenses() {
+  $("expenseTotal").textContent=money(expenseTotal());
+  $("expenseEmpty").style.display=data.expenses.length?"none":"block";
+  $("expenseRows").innerHTML=data.expenses.map(item=>`<tr><td>${escapeHTML(item.date)}</td><td>${escapeHTML(item.category)}</td><td>${escapeHTML(item.notes||"—")}</td><td>${money(item.amount)}</td><td><button class="danger" type="button" onclick="deleteExpense(${Number(item.id)})">حذف</button></td></tr>`).join("");
+}
+function render() {
+  $("systemProfit").value=data.systemProfit; $("miniProfit").value=data.miniProfit; $("goal").value=data.goal;
+  renderSchedule();renderDays();renderExtraIncome();renderExpenses();
+  const systemActual=data.days.reduce((s,d)=>s+num(d.systemActual),0);
+  const systemTarget=data.days.reduce((s,d,i)=>s+getSystemTarget(d.date,i),0);
+  const miniTarget=data.schedule.length,miniActual=data.schedule.filter(item=>item.done).length;
+  const total=totalProfit(),gross=operationsProfit()+extraIncomeTotal(),expenses=expenseTotal();
+  const goal=num(data.goal),remaining=goal-total,pct=goal?total/goal*100:0;
+  $("goalDisplay").textContent=money(goal);$("total").textContent=money(total);
+  $("remaining").textContent=remaining>0?money(remaining):"تجاوزت الهدف بـ "+money(-remaining);
+  $("percent").textContent=Math.max(0,pct).toFixed(1)+"%";$("bar").style.width=Math.min(100,Math.max(0,pct))+"%";
+  $("summary").innerHTML=`بداية الخطة: <b>${escapeHTML(dateLabel(START_DATE))}</b><br>عمليات خصم النظام: <b>${systemActual}</b> من ${systemTarget} (الفرق ${systemActual-systemTarget>=0?"+":""}${systemActual-systemTarget})<br>عمليات الميني باك: <b>${miniActual}</b> من ${miniTarget} (المتبقي ${miniTarget-miniActual})<br>مكسب خصم النظام: <b>${money(systemActual*num(data.systemProfit))}</b><br>مكسب الميني باك: <b>${money(miniActual*num(data.miniProfit))}</b><br>الدخل الإضافي: <b>${money(extraIncomeTotal())}</b><br>إجمالي المصاريف: <b class="red">${money(expenses)}</b><br>إجمالي المكسب قبل المصاريف: <b>${money(gross)}</b><br>صافي المكسب بعد المصاريف: <b class="green">${money(total)}</b><br>${remaining>0?"المبلغ المطلوب لتحقيق الهدف: "+money(remaining):"مبروك، حققت الهدف أو تجاوزته."}`;
+  save();
+}
+window.toggleMini=function(id,checked){const item=data.schedule.find(x=>x.id===id);if(!item)return;item.done=Boolean(checked);render();};
+window.editSystem=function(index,value){if(!data.days[index])return;data.days[index].systemActual=num(value);render();};
+window.addExtraIncome=function(){const source=$("extraSource").value.trim(),date=$("extraDate").value,amount=Number($("extraAmount").value);if(!source||!date||!Number.isFinite(amount)||amount<=0){alert("اكتب مصدر الدخل والتاريخ والمبلغ بشكل صحيح.");return;}data.extraIncome.push({id:Date.now(),source:source.slice(0,100),date:date,amount:amount});$("extraSource").value="";$("extraAmount").value="";render();};
+window.deleteExtraIncome=function(id){if(!confirm("متأكد إنك عايز تحذف الدخل ده؟"))return;data.extraIncome=data.extraIncome.filter(item=>item.id!==id);render();};
+window.addExpense=function(){const category=$("expenseCategory").value,date=$("expenseDate").value,amount=Number($("expenseAmount").value),notes=$("expenseNotes").value.trim();if(!date||!Number.isFinite(amount)||amount<=0){alert("اكتب تاريخ المصروف ومبلغًا صحيحًا.");return;}data.expenses.push({id:Date.now(),category:category,date:date,notes:notes.slice(0,200),amount:amount});$("expenseAmount").value="";$("expenseNotes").value="";render();};
+window.deleteExpense=function(id){if(!confirm("متأكد إنك عايز تحذف المصروف ده؟"))return;data.expenses=data.expenses.filter(item=>item.id!==id);render();};
+["systemProfit","miniProfit","goal"].forEach(id=>{$(id).addEventListener("change",()=>{const value=Number($(id).value);if(!Number.isFinite(value)||value<0||(id==="goal"&&value<1)){alert("اكتب رقمًا صحيحًا.");render();return;}data[id]=value;render();});});
+
+window.exportCSV=function(){
+  const lines=[["نوع السجل","اليوم والتاريخ","رقم/مصدر","ملاحظة","هدف النظام","فعلي النظام","هدف الميني","فعلي الميني","المبلغ"]];
+  data.days.forEach((d,i)=>lines.push(["متابعة يومية",dateLabel(d.date),"","",getSystemTarget(d.date,i),num(d.systemActual),scheduledCount(d.date),completedCount(d.date),num(d.systemActual)*num(data.systemProfit)+completedCount(d.date)*num(data.miniProfit)]));
+  data.schedule.forEach(item=>lines.push(["ميني باك",dateLabel(item.date),item.phone,item.fire?"🔥":"","","",1,item.done?1:0,item.done?num(data.miniProfit):0]));
+  data.extraIncome.forEach(item=>lines.push(["دخل إضافي",item.date,item.source,"","","","","",item.amount]));
+  data.expenses.forEach(item=>lines.push(["مصروف",item.date,item.category,item.notes||"","","","","",-item.amount]));
+  lines.push(["إجمالي المصاريف","","","","","","","",expenseTotal()]);
+  lines.push(["صافي المكسب بعد المصاريف","","","","","","","",totalProfit()]);
+  lines.push(["الهدف","","","","","","","",data.goal]);
+  const csv="\uFEFF"+lines.map(row=>row.map(value=>`"${String(value).replace(/"/g,'""')}"`).join(",")).join("\r\n");
+  const blob=new Blob([csv],{type:"text/csv;charset=utf-8;"}),url=URL.createObjectURL(blob),a=document.createElement("a");a.href=url;a.download="ahmed-shokr-tracker.csv";document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);
+};
+window.copySummary=async function(){
+  const total=totalProfit(),remaining=num(data.goal)-total;
+  const txt=`متابعة هدف أحمد شكر\nبداية الخطة: ${dateLabel(START_DATE)}\nمكسب خصم النظام: ${money(data.days.reduce((s,d)=>s+num(d.systemActual),0)*num(data.systemProfit))}\nمكسب الميني باك: ${money(data.schedule.filter(x=>x.done).length*num(data.miniProfit))}\nالدخل الإضافي: ${money(extraIncomeTotal())}\nإجمالي المصاريف: ${money(expenseTotal())}\nصافي المكسب بعد المصاريف: ${money(total)}\nالهدف: ${money(data.goal)}\n${remaining>0?"المتبقي: "+money(remaining):"الزيادة عن الهدف: "+money(-remaining)}`;
+  try{await navigator.clipboard.writeText(txt);alert("تم نسخ الملخص.");}catch(e){prompt("انسخ الملخص:",txt);}
+};
+window.resetData=function(){if(!confirm("سيتم مسح عمليات المتابعة والدخل الإضافي والمصاريف وحالات تنفيذ الميني باك. متأكد؟"))return;data=defaultData();render();};
+
+$("extraDate").value=localDateString(new Date());
+$("expenseDate").value=localDateString(new Date());
+render();
+</script>
+</body>
+</html>
