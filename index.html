@@ -2,716 +2,570 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>متابعة هدف أحمد شكر</title>
-<style>
-:root{
-  --bg:#0b1220;--card:#151f32;--line:#2b3951;
-  --text:#f4f7fb;--muted:#aab7ca;--green:#25c685;
-  --red:#ff6474;--blue:#63a8ff
-}
-*{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--text);font-family:Arial,sans-serif;padding:12px}
-.container{max-width:1100px;margin:auto}
-h1{text-align:center;font-size:25px;margin:14px 0}
-h2{font-size:18px;margin-top:4px}
-.sub{text-align:center;color:var(--muted);margin-bottom:20px}
-.cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
-.card,.panel{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:15px;margin-bottom:12px}
-.label{color:var(--muted);font-size:13px}
-.value{font-size:23px;font-weight:bold;margin-top:8px;overflow-wrap:anywhere}
-.green{color:var(--green)}
-.red{color:var(--red)}
-.blue{color:var(--blue)}
-.progress{height:12px;background:#27354b;border-radius:20px;overflow:hidden;margin-top:12px}
-.bar{height:100%;width:0;background:var(--green);transition:width .2s}
-table{width:100%;border-collapse:collapse;min-width:650px}
-th,td{border-bottom:1px solid var(--line);padding:10px 7px;text-align:center}
-th{color:var(--muted);font-size:13px}
-input{background:#0b1220;color:white;border:1px solid var(--line);border-radius:8px;padding:9px;max-width:100%}
-input[type=number]{width:85px;text-align:center}
-input[type=date]{width:150px}
-input[type=text]{width:100%}
-.table-wrap{overflow-x:auto}
-button{border:0;border-radius:9px;padding:11px 14px;font-weight:bold;cursor:pointer;margin:4px}
-.primary{background:var(--green);color:#062319}
-.secondary{background:#263751;color:white}
-.danger{background:#632b39;color:white}
-.actions{display:flex;flex-wrap:wrap;gap:5px;margin-top:12px}
-.note{font-size:13px;color:var(--muted);line-height:1.8}
-.status{font-weight:bold;white-space:nowrap}
-.fields{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px}
-.fields label{display:block;color:var(--muted);font-size:14px}
-.fields input{display:block;margin-top:7px;width:100%}
-.phone{direction:ltr;white-space:nowrap;font-variant-numeric:tabular-nums}
-.fire{color:#ff8b48}
-.done-row{background:#102b27}
-.check{width:20px;height:20px;accent-color:#25c685}
-.daydate{line-height:1.7;white-space:nowrap}
-@media(max-width:480px){
- body{padding:9px}
- .value{font-size:19px}
- .card,.panel{padding:11px}
- h1{font-size:22px}
-}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#101827">
+  <title>Ahmed Shokr — Goal Tracker</title>
+  <style>
+    :root {
+      --bg: #0b1120;
+      --panel: #151f32;
+      --panel2: #1c2940;
+      --text: #f2f5fb;
+      --muted: #a5b2c8;
+      --green: #3ddc97;
+      --red: #ff6b78;
+      --border: #2c3a52;
+      --blue: #69a7ff;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: system-ui, Arial, sans-serif;
+      line-height: 1.7;
+    }
+    header {
+      padding: 22px 16px;
+      background: linear-gradient(135deg, #182a43, #101827);
+      border-bottom: 1px solid var(--border);
+    }
+    .container { width: min(100% - 24px, 950px); margin: auto; }
+    .brand { font-size: 22px; font-weight: 800; }
+    .sub { color: var(--muted); font-size: 13px; }
+    h1 { font-size: 24px; margin: 8px 0 0; }
+    h2 { font-size: 19px; margin-top: 0; }
+    main { padding: 18px 0 40px; }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 16px;
+      margin-bottom: 14px;
+      min-width: 0;
+    }
+    .stat-label { color: var(--muted); font-size: 13px; }
+    .stat-value { font-size: 24px; font-weight: 800; overflow-wrap: anywhere; }
+    .green { color: var(--green); }
+    .red { color: var(--red); }
+    .blue { color: var(--blue); }
+    label { display: block; font-size: 13px; color: var(--muted); margin: 10px 0 5px; }
+    input, select, textarea {
+      display: block;
+      width: 100%;
+      padding: 12px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: #0e1728;
+      color: var(--text);
+      font: inherit;
+      outline: none;
+    }
+    input:focus, select:focus, textarea:focus { border-color: var(--blue); }
+    button {
+      border: 0;
+      border-radius: 10px;
+      padding: 11px 14px;
+      font: inherit;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    .primary { background: var(--green); color: #092016; width: 100%; margin-top: 12px; }
+    .secondary { background: var(--panel2); color: var(--text); border: 1px solid var(--border); }
+    .danger { background: #49202b; color: #ffdbe0; }
+    .actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+    .actions button { flex: 1; }
+    .progress {
+      height: 12px;
+      border-radius: 20px;
+      background: #29364b;
+      overflow: hidden;
+      margin: 10px 0;
+    }
+    .progress > div {
+      height: 100%;
+      width: 0%;
+      background: var(--green);
+      transition: width .25s;
+    }
+    .row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .row:last-child { border-bottom: 0; }
+    .row small { display: block; color: var(--muted); overflow-wrap: anywhere; }
+    .amount { font-weight: 800; white-space: nowrap; }
+    .delete-btn { padding: 6px 9px; margin-top: 5px; font-size: 12px; }
+    .empty { color: var(--muted); text-align: center; padding: 16px 0; }
+    .note { color: var(--muted); font-size: 12px; }
+    .summary {
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+      background: #0e1728;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px;
+      font-size: 13px;
+    }
+    footer { text-align: center; color: var(--muted); padding: 20px 10px; font-size: 12px; }
+    @media (max-width: 540px) {
+      .grid { grid-template-columns: 1fr 1fr; gap: 8px; }
+      .card { padding: 12px; }
+      .stat-value { font-size: 20px; }
+      h1 { font-size: 21px; }
+    }
+  </style>
 </head>
 <body>
-<div class="container">
-
-<h1>متابعة هدف أحمد شكر</h1>
-<div class="sub">الميني باك في مواعيده وخصم النظام في باقي الأيام</div>
-
-<div class="cards">
-  <div class="card">
-    <div class="label">الهدف الكلي</div>
-    <div class="value" id="goalDisplay">11,500 ج.م</div>
+<header>
+  <div class="container">
+    <div class="brand">AS — AHMED SHOKR</div>
+    <div class="sub">PERSONAL GOAL TRACKER</div>
+    <h1>متابعة هدفي المالي</h1>
+    <div class="sub">تابع مكسبك ومصاريفك وصافي فلوسك</div>
   </div>
-  <div class="card">
-    <div class="label">إجمالي المكسب الفعلي</div>
-    <div class="value green" id="total">0 ج.م</div>
-  </div>
-  <div class="card">
-    <div class="label">المتبقي للهدف</div>
-    <div class="value blue" id="remaining">11,500 ج.م</div>
-  </div>
-  <div class="card">
-    <div class="label">نسبة الإنجاز</div>
-    <div class="value" id="percent">0%</div>
-    <div class="progress"><div class="bar" id="bar"></div></div>
-  </div>
-</div>
+</header>
 
-<div class="panel">
-<h2>⚙️ إعدادات الخطة</h2>
-<div class="fields">
-  <label>ربح خصم النظام (جنيه)
-    <input id="systemProfit" type="number" min="0" step="0.01" value="95">
-  </label>
-  <label>ربح الميني باك (جنيه)
-    <input id="miniProfit" type="number" min="0" step="0.01" value="300">
-  </label>
-  <label>الهدف المالي (جنيه)
-    <input id="goal" type="number" min="1" step="1" value="11500">
-  </label>
-</div>
-<p class="note">
-بداية المتابعة: السبت 17 أكتوبر 2026.
-الأيام التي بها ميني باك مخصصة له، وباقي الأيام مخصصة لخصم النظام.
-</p>
-</div>
+<main class="container">
+  <section class="grid">
+    <div class="card">
+      <div class="stat-label">الهدف المالي</div>
+      <div class="stat-value blue" id="goalView">11,500 ج.م</div>
+    </div>
+    <div class="card">
+      <div class="stat-label">إجمالي الدخل قبل المصاريف</div>
+      <div class="stat-value green" id="grossView">0 ج.م</div>
+    </div>
+    <div class="card">
+      <div class="stat-label">إجمالي المصاريف</div>
+      <div class="stat-value red" id="expenseView">0 ج.م</div>
+    </div>
+    <div class="card">
+      <div class="stat-label">صافي المكسب بعد المصاريف</div>
+      <div class="stat-value green" id="netView">0 ج.م</div>
+    </div>
+    <div class="card">
+      <div class="stat-label">المتبقي لتحقيق الهدف</div>
+      <div class="stat-value" id="remainingView">11,500 ج.م</div>
+    </div>
+    <div class="card">
+      <div class="stat-label">نسبة تحقيق الهدف</div>
+      <div class="stat-value blue" id="percentView">0%</div>
+    </div>
+  </section>
 
-<div class="panel">
-<h2>📱 جدول مواعيد الميني باك</h2>
-<p class="note">
-المواعيد حسب قائمتك، مع تغيير الشهر من 8 إلى 10.
-علّم على «تم» بعد تنفيذ كل عملية. العدد الفعلي للميني باك سيتحسب تلقائيًا في الجدول اليومي.
-</p>
+  <section class="card">
+    <h2>تقدم الهدف</h2>
+    <div class="progress"><div id="progressBar"></div></div>
+    <div class="sub" id="progressText">لسه البداية — ابدأ سجّل دخلك ومصاريفك.</div>
+  </section>
 
-<div class="cards">
-  <div class="card">
-    <div class="label">إجمالي أرقام الميني باك</div>
-    <div class="value" id="miniScheduledCount">16</div>
-  </div>
-  <div class="card">
-    <div class="label">عمليات الميني باك المنفذة</div>
-    <div class="value green" id="miniDoneCount">0</div>
-  </div>
-</div>
+  <section class="card">
+    <h2>إعدادات الهدف</h2>
+    <label for="goalInput">الهدف بالجنيه المصري</label>
+    <input id="goalInput" type="number" min="1" step="0.01" placeholder="11500">
+    <button class="primary" id="saveGoalBtn">حفظ الهدف</button>
+  </section>
 
-<div class="table-wrap">
-<table>
-<thead>
-<tr>
-  <th>اليوم والتاريخ</th>
-  <th>رقم الموبايل</th>
-  <th>ملاحظة</th>
-  <th>تم التنفيذ؟</th>
-</tr>
-</thead>
-<tbody id="miniScheduleRows"></tbody>
-</table>
-</div>
-</div>
+  <section class="card">
+    <h2>إضافة دخل / مكسب</h2>
+    <form id="incomeForm">
+      <label for="incomeType">نوع الدخل</label>
+      <select id="incomeType" required>
+        <option value="خصم النظام">خصم النظام</option>
+        <option value="ميني باك">ميني باك</option>
+        <option value="دخل إضافي">دخل إضافي</option>
+        <option value="أخرى">أخرى</option>
+      </select>
 
-<div class="panel">
-<h2>📅 جدول المتابعة اليومي — 13 يومًا</h2>
-<div class="table-wrap">
-<table>
-<thead>
-<tr>
-  <th>اليوم والتاريخ</th>
-  <th>هدف النظام</th>
-  <th>فعلي النظام</th>
-  <th>هدف الميني</th>
-  <th>فعلي الميني</th>
-  <th>الفرق</th>
-  <th>مكسب اليوم</th>
-</tr>
-</thead>
-<tbody id="rows"></tbody>
-</table>
-</div>
-<p class="note">
-في أيام الميني باك، عدد الهدف مأخوذ من قائمة الأرقام أعلاه.
-في الأيام الأخرى، يظهر هدف خصم النظام. يمكنك تعديل الأهداف والأعداد الفعلية.
-</p>
-<div class="actions">
-<button class="primary" type="button" onclick="exportCSV()">تصدير CSV</button>
-<button class="secondary" type="button" onclick="copySummary()">نسخ الملخص</button>
-</div>
-</div>
+      <label for="incomeAmount">المبلغ بالجنيه</label>
+      <input id="incomeAmount" type="number" min="0.01" step="0.01" required placeholder="مثال: 95">
 
-<div class="panel">
-<h2>💰 الدخل الإضافي</h2>
-<p class="note">سجّل أي مكسب آخر، مثل بيع الباقات أو شغل إضافي.</p>
+      <label for="incomeDate">التاريخ</label>
+      <input id="incomeDate" type="date" required>
 
-<div class="fields">
-  <label>مصدر الدخل
-    <input id="extraSource" type="text" maxlength="100" placeholder="مثلاً: بيع باقات">
-  </label>
-  <label>التاريخ
-    <input id="extraDate" type="date">
-  </label>
-  <label>المبلغ بالجنيه
-    <input id="extraAmount" type="number" min="0.01" step="0.01" placeholder="مثلاً: 500">
-  </label>
-</div>
-<div class="actions">
-<button class="primary" type="button" onclick="addExtraIncome()">إضافة الدخل</button>
-</div>
+      <label for="incomeNote">ملاحظات</label>
+      <input id="incomeNote" maxlength="200" placeholder="مثال: مكسب عملية">
 
-<p>إجمالي الدخل الإضافي: <strong class="green" id="extraTotal">0 ج.م</strong></p>
+      <button class="primary" type="submit">إضافة الدخل</button>
+    </form>
+  </section>
 
-<div class="table-wrap">
-<table style="min-width:500px">
-<thead>
-<tr><th>التاريخ</th><th>المصدر</th><th>المبلغ</th><th>حذف</th></tr>
-</thead>
-<tbody id="extraRows"></tbody>
-</table>
-</div>
-<p class="note" id="extraEmpty">لم يتم تسجيل دخل إضافي حتى الآن.</p>
-</div>
+  <section class="card">
+    <h2>مصاريفي</h2>
+    <p class="note">كل مصروف تضيفه هيتخصم تلقائيًا من صافي المكسب، وهيتحدّث المتبقي من الهدف.</p>
+    <form id="expenseForm">
+      <label for="expenseType">نوع المصروف</label>
+      <select id="expenseType" required>
+        <option value="أكل وشرب">أكل وشرب</option>
+        <option value="مواصلات">مواصلات</option>
+        <option value="فواتير">فواتير</option>
+        <option value="مشتريات">مشتريات</option>
+        <option value="الجيم">الجيم</option>
+        <option value="تعليم">تعليم</option>
+        <option value="شخصي">شخصي</option>
+        <option value="أخرى">أخرى</option>
+      </select>
 
-<div class="panel">
-<h2>📊 ملخص الأداء</h2>
-<div id="summary" class="note"></div>
-</div>
+      <label for="expenseAmount">المبلغ بالجنيه</label>
+      <input id="expenseAmount" type="number" min="0.01" step="0.01" required placeholder="اكتب مبلغ المصروف">
 
-<div class="panel">
-<h2>⚠️ إدارة البيانات</h2>
-<p class="note">البيانات محفوظة في المتصفح على نفس الجهاز. احتفظ بنسخة CSV من وقت لآخر.</p>
-<button class="danger" type="button" onclick="resetData()">إعادة تعيين المتابعة</button>
-</div>
+      <label for="expenseDate">التاريخ</label>
+      <input id="expenseDate" type="date" required>
 
-<footer class="note" style="text-align:center;padding:12px">
-Ahmed Shokr — Goal Tracker
-</footer>
-</div>
+      <label for="expenseNote">ملاحظات</label>
+      <textarea id="expenseNote" rows="2" maxlength="300" placeholder="اختياري"></textarea>
+
+      <button class="primary" type="submit">تسجيل المصروف</button>
+    </form>
+    <div class="row">
+      <strong>إجمالي المصاريف المسجلة</strong>
+      <strong class="red" id="expenseTotal">0 ج.م</strong>
+    </div>
+    <div id="expenseList"><div class="empty">لسه مفيش مصاريف مسجلة.</div></div>
+  </section>
+
+  <section class="card">
+    <h2>سجل الدخل</h2>
+    <div id="incomeList"><div class="empty">لسه مفيش دخل مسجل.</div></div>
+  </section>
+
+  <section class="card">
+    <h2>ملخص الأداء</h2>
+    <div class="summary" id="summary">جاري تجهيز الملخص...</div>
+    <div class="actions">
+      <button class="secondary" id="copyBtn">نسخ الملخص</button>
+      <button class="secondary" id="exportBtn">تصدير CSV</button>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>النسخ الاحتياطي</h2>
+    <p class="note">البيانات محفوظة في المتصفح على الجهاز الحالي. احتفظ بنسخة احتياطية لو هتغيّر الجهاز أو تمسح بيانات المتصفح.</p>
+    <div class="actions">
+      <button class="secondary" id="backupBtn">تنزيل نسخة احتياطية</button>
+      <button class="secondary" id="importBtn">استيراد نسخة</button>
+      <input type="file" id="backupFile" accept=".json,application/json" hidden>
+    </div>
+    <button class="danger" id="resetBtn" style="width:100%;margin-top:12px">مسح كل البيانات</button>
+  </section>
+</main>
+
+<footer>Ahmed Shokr — Goal Tracker</footer>
 
 <script>
-"use strict";
+(() => {
+  "use strict";
 
-const KEY = "ahmed_shokr_goal_tracker_v3";
-const OLD_KEYS = [
-  "ahmed_shokr_goal_tracker_v2",
-  "ahmed_shokr_goal_tracker_v1"
-];
+  const STORAGE_KEY = "ahmed_shokr_goal_tracker_v3";
+  const $ = id => document.getElementById(id);
 
-const START_DATE = "2026-10-17";
-
-const miniScheduleDefaults = [
-  {phone:"01012639004",date:"2026-10-18",fire:true},
-  {phone:"01096418486",date:"2026-10-20",fire:false},
-  {phone:"01097615274",date:"2026-10-21",fire:false},
-  {phone:"01021468509",date:"2026-10-21",fire:true},
-  {phone:"01042408768",date:"2026-10-21",fire:false},
-  {phone:"01039684101",date:"2026-10-23",fire:false},
-  {phone:"01041138562",date:"2026-10-23",fire:true},
-  {phone:"01041170367",date:"2026-10-24",fire:false},
-  {phone:"01041174587",date:"2026-10-24",fire:false},
-  {phone:"01041160584",date:"2026-10-25",fire:false},
-  {phone:"01041175387",date:"2026-10-25",fire:false},
-  {phone:"01041170369",date:"2026-10-25",fire:false},
-  {phone:"01041134165",date:"2026-10-25",fire:false},
-  {phone:"01039705416",date:"2026-10-26",fire:false},
-  {phone:"01041178192",date:"2026-10-26",fire:false},
-  {phone:"01041132567",date:"2026-10-26",fire:false}
-];
-
-// خطة خصم النظام الأصلية، تُستخدم في الأيام غير المخصصة للميني باك.
-const systemPlan = [6,5,6,5,5,6,5,5,4,5,6,6,7];
-
-const $ = id => document.getElementById(id);
-
-function localDateString(date) {
-  const y = date.getFullYear();
-  const m = String(date.getMonth()+1).padStart(2,"0");
-  const d = String(date.getDate()).padStart(2,"0");
-  return `${y}-${m}-${d}`;
-}
-
-function parseLocalDate(value) {
-  const parts = String(value).split("-").map(Number);
-  return new Date(parts[0],parts[1]-1,parts[2]);
-}
-
-function dayName(value) {
-  return parseLocalDate(value).toLocaleDateString("ar-EG",{weekday:"long"});
-}
-
-function displayDate(value) {
-  const d = parseLocalDate(value);
-  return d.toLocaleDateString("en-GB",{
-    day:"2-digit",month:"2-digit",year:"numeric"
-  });
-}
-
-function dateLabel(value) {
-  return dayName(value)+" — "+displayDate(value);
-}
-
-function validNumber(value,fallback=0) {
-  const n = Number(value);
-  return Number.isFinite(n) && n >= 0 ? n : fallback;
-}
-
-function num(value) {
-  return validNumber(value,0);
-}
-
-function money(value) {
-  return Number(value || 0).toLocaleString("en-US",{
-    maximumFractionDigits:2
-  })+" ج.م";
-}
-
-function escapeHTML(value) {
-  return String(value).replace(/[&<>"']/g,char => ({
-    "&":"&amp;",
-    "<":"&lt;",
-    ">":"&gt;",
-    '"':"&quot;",
-    "'":"&#39;"
-  })[char]);
-}
-
-function defaultData() {
-  const start = parseLocalDate(START_DATE);
-
-  const days = Array.from({length:13},(_,i) => {
-    const date = new Date(start);
-    date.setDate(start.getDate()+i);
-    const dateText = localDateString(date);
-
-    const miniTarget = miniScheduleDefaults.filter(
-      item => item.date === dateText
-    ).length;
-
-    return {
-      date:dateText,
-      systemTarget:miniTarget > 0 ? 0 : systemPlan[i],
-      systemActual:0,
-      miniTarget:miniTarget,
-      miniActual:0
-    };
-  });
-
-  return {
-    systemProfit:95,
-    miniProfit:300,
-    goal:11500,
-    days:days,
-    schedule:miniScheduleDefaults.map((item,index)=>({
-      ...item,
-      id:index+1,
-      done:false
-    })),
-    extraIncome:[]
+  const today = () => {
+    const d = new Date();
+    return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
   };
-}
 
-function normalizeData(saved) {
-  const base = defaultData();
+  const money = value => new Intl.NumberFormat("ar-EG", {
+    maximumFractionDigits: 2
+  }).format(Number(value) || 0) + " ج.م";
 
-  saved.systemProfit = validNumber(saved.systemProfit,95);
-  saved.miniProfit = validNumber(saved.miniProfit,300);
-  saved.goal = Math.max(1,validNumber(saved.goal,11500));
+  const escapeHTML = value => String(value ?? "").replace(/[&<>"']/g, ch => ({
+    "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;"
+  })[ch]);
 
-  if (!Array.isArray(saved.extraIncome)) saved.extraIncome = [];
-
-  saved.extraIncome = saved.extraIncome
-    .filter(item =>
-      item &&
-      typeof item.source === "string" &&
-      typeof item.date === "string" &&
-      Number.isFinite(Number(item.amount)) &&
-      Number(item.amount) > 0
-    )
-    .map((item,index)=>({
-      id:Number(item.id) || Date.now()+index,
-      source:item.source.slice(0,100),
-      date:item.date,
-      amount:Number(item.amount)
-    }));
-
-  if (!Array.isArray(saved.days) || saved.days.length !== 13) {
-    saved.days = base.days;
-  } else {
-    saved.days = saved.days.map((d,i)=>({
-      date:base.days[i].date,
-      systemTarget:validNumber(d.systemTarget,base.days[i].systemTarget),
-      systemActual:validNumber(d.systemActual,0),
-      miniTarget:base.days[i].miniTarget,
-      miniActual:0
-    }));
+  function newData() {
+    return {
+      goal: 11500,
+      incomes: [],
+      expenses: []
+    };
   }
 
-  if (!Array.isArray(saved.schedule)) {
-    saved.schedule = base.schedule;
-  } else {
-    saved.schedule = base.schedule.map(item=>{
-      const old = saved.schedule.find(x=>x.phone===item.phone);
+  function loadData() {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (!raw) return newData();
+
+      const saved = JSON.parse(raw);
       return {
-        ...item,
-        done:old ? Boolean(old.done) : false
+        goal: Number(saved.goal) > 0 ? Number(saved.goal) : 11500,
+        incomes: Array.isArray(saved.incomes) ? saved.incomes : [],
+        expenses: Array.isArray(saved.expenses) ? saved.expenses : []
       };
-    });
-  }
-
-  return saved;
-}
-
-function load() {
-  try {
-    const current = localStorage.getItem(KEY);
-    if (current) return normalizeData(JSON.parse(current));
-
-    for (const oldKey of OLD_KEYS) {
-      const old = localStorage.getItem(oldKey);
-      if (old) return normalizeData(JSON.parse(old));
+    } catch (error) {
+      alert("تعذر قراءة البيانات المحفوظة. لم يتم مسحها.");
+      return newData();
     }
-  } catch(e) {
-    console.warn("تعذر تحميل البيانات المحفوظة.");
   }
 
-  return defaultData();
-}
+  let data = loadData();
 
-let data = load();
-
-function save() {
-  try {
-    localStorage.setItem(KEY,JSON.stringify(data));
-  } catch(e) {
-    alert("تعذر حفظ البيانات في المتصفح.");
-  }
-}
-
-function scheduledCount(date) {
-  return data.schedule.filter(item=>item.date===date).length;
-}
-
-function completedCount(date) {
-  return data.schedule.filter(item=>item.date===date && item.done).length;
-}
-
-function getSystemTarget(date,index) {
-  // أيام الميني باك مخصصة للميني باك؛ باقي الأيام لخصم النظام.
-  return scheduledCount(date)>0 ? 0 : num(data.days[index].systemTarget);
-}
-
-function operationsProfit() {
-  return data.days.reduce((sum,d,i)=>{
-    return sum+
-      num(d.systemActual)*num(data.systemProfit)+
-      completedCount(d.date)*num(data.miniProfit);
-  },0);
-}
-
-function extraIncomeTotal() {
-  return data.extraIncome.reduce((sum,item)=>sum+num(item.amount),0);
-}
-
-function totalProfit() {
-  return operationsProfit()+extraIncomeTotal();
-}
-
-function renderSchedule() {
-  $("miniScheduleRows").innerHTML = data.schedule.map(item=>`
-    <tr class="${item.done ? "done-row" : ""}">
-      <td class="daydate">${escapeHTML(dateLabel(item.date))}</td>
-      <td class="phone">${escapeHTML(item.phone)}</td>
-      <td>${item.fire ? '<span class="fire"></span>' : "—"}</td>
-      <td>
-        <label>
-          <input class="check" type="checkbox"
-            ${item.done ? "checked" : ""}
-            aria-label="تم تنفيذ "+ "${escapeHTML(item.phone)}"
-            onchange="toggleMini(${item.id},this.checked)">
-          ${item.done ? '<span class="green">تم</span>' : "تم؟"}
-        </label>
-      </td>
-    </tr>
-  `).join("");
-
-  $("miniScheduledCount").textContent = data.schedule.length;
-  $("miniDoneCount").textContent =
-    data.schedule.filter(item=>item.done).length;
-}
-
-function renderDays() {
-  $("rows").innerHTML = data.days.map((d,i)=>{
-    const miniTarget = scheduledCount(d.date);
-    const miniActual = completedCount(d.date);
-    const systemTarget = getSystemTarget(d.date,i);
-
-    const diff =
-      (num(d.systemActual)-systemTarget)+
-      (miniActual-miniTarget);
-
-    const profit =
-      num(d.systemActual)*num(data.systemProfit)+
-      miniActual*num(data.miniProfit);
-
-    let status;
-    if(diff>0) status=`<span class="green status">زيادة +${diff}</span>`;
-    else if(diff<0) status=`<span class="red status">عجز ${diff}</span>`;
-    else status=`<span class="status">مطابق</span>`;
-
-    return `<tr>
-      <td class="daydate">${i+1}<br>${escapeHTML(dateLabel(d.date))}</td>
-      <td>${systemTarget}</td>
-      <td>
-        <input type="number" min="0" step="1"
-          aria-label="فعلي النظام يوم ${i+1}"
-          value="${num(d.systemActual)}"
-          onchange="editSystem(${i},this.value)">
-      </td>
-      <td>${miniTarget}</td>
-      <td>${miniActual}</td>
-      <td>${status}</td>
-      <td>${money(profit)}</td>
-    </tr>`;
-  }).join("");
-}
-
-function renderExtraIncome() {
-  $("extraTotal").textContent = money(extraIncomeTotal());
-  $("extraEmpty").style.display = data.extraIncome.length ? "none" : "block";
-
-  $("extraRows").innerHTML = data.extraIncome.map(item=>`
-    <tr>
-      <td>${escapeHTML(item.date)}</td>
-      <td>${escapeHTML(item.source)}</td>
-      <td>${money(item.amount)}</td>
-      <td>
-        <button class="danger" type="button"
-          onclick="deleteExtraIncome(${Number(item.id)})">حذف</button>
-      </td>
-    </tr>
-  `).join("");
-}
-
-function render() {
-  $("systemProfit").value = data.systemProfit;
-  $("miniProfit").value = data.miniProfit;
-  $("goal").value = data.goal;
-
-  renderSchedule();
-  renderDays();
-  renderExtraIncome();
-
-  const systemActual = data.days.reduce((s,d)=>s+num(d.systemActual),0);
-  const systemTarget = data.days.reduce((s,d,i)=>s+getSystemTarget(d.date,i),0);
-  const miniTarget = data.schedule.length;
-  const miniActual = data.schedule.filter(item=>item.done).length;
-
-  const total = totalProfit();
-  const goal = num(data.goal);
-  const remaining = goal-total;
-  const pct = goal ? total/goal*100 : 0;
-
-  $("goalDisplay").textContent = money(goal);
-  $("total").textContent = money(total);
-  $("remaining").textContent = remaining>0
-    ? money(remaining)
-    : "تجاوزت الهدف بـ "+money(-remaining);
-
-  $("percent").textContent = Math.max(0,pct).toFixed(1)+"%";
-  $("bar").style.width = Math.min(100,Math.max(0,pct))+"%";
-
-  $("summary").innerHTML = `
-    بداية الخطة: <b>${escapeHTML(dateLabel(START_DATE))}</b><br>
-    عمليات خصم النظام: <b>${systemActual}</b> من ${systemTarget}
-    (الفرق ${systemActual-systemTarget>=0?"+":""}${systemActual-systemTarget})<br>
-    عمليات الميني باك: <b>${miniActual}</b> من ${miniTarget}
-    (المتبقي ${miniTarget-miniActual})<br>
-    مكسب خصم النظام: <b>${money(systemActual*num(data.systemProfit))}</b><br>
-    مكسب الميني باك: <b>${money(miniActual*num(data.miniProfit))}</b><br>
-    الدخل الإضافي: <b>${money(extraIncomeTotal())}</b><br>
-    إجمالي المكسب: <b class="green">${money(total)}</b><br>
-    ${remaining>0
-      ? "المبلغ المطلوب لتحقيق الهدف: "+money(remaining)
-      : "مبروك، حققت الهدف أو تجاوزته."}
-  `;
-
-  save();
-}
-
-window.toggleMini = function(id,checked) {
-  const item = data.schedule.find(x=>x.id===id);
-  if(!item) return;
-  item.done = Boolean(checked);
-  render();
-};
-
-window.editSystem = function(index,value) {
-  if(!data.days[index]) return;
-  data.days[index].systemActual = num(value);
-  render();
-};
-
-window.addExtraIncome = function() {
-  const source = $("extraSource").value.trim();
-  const date = $("extraDate").value;
-  const amount = Number($("extraAmount").value);
-
-  if(!source || !date || !Number.isFinite(amount) || amount<=0) {
-    alert("اكتب مصدر الدخل والتاريخ والمبلغ بشكل صحيح.");
-    return;
+  function saveData() {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+      return true;
+    } catch (error) {
+      alert("تعذر حفظ البيانات. تأكد من مساحة المتصفح.");
+      return false;
+    }
   }
 
-  data.extraIncome.push({
-    id:Date.now(),
-    source:source.slice(0,100),
-    date:date,
-    amount:amount
-  });
+  const incomeTotal = () => data.incomes.reduce((sum, item) => sum + (Number(item.amount) || 0), 0);
+  const expensesTotal = () => data.expenses.reduce((sum, item) => sum + (Number(item.amount) || 0), 0);
+  const netProfit = () => incomeTotal() - expensesTotal();
+  const remaining = () => Math.max(0, data.goal - netProfit());
+  const percent = () => data.goal > 0 ? Math.max(0, Math.min(100, netProfit() / data.goal * 100)) : 0;
 
-  $("extraSource").value = "";
-  $("extraAmount").value = "";
-  render();
-};
-
-window.deleteExtraIncome = function(id) {
-  if(!confirm("متأكد إنك عايز تحذف الدخل ده؟")) return;
-  data.extraIncome = data.extraIncome.filter(item=>item.id!==id);
-  render();
-};
-
-["systemProfit","miniProfit","goal"].forEach(id=>{
-  $(id).addEventListener("change",()=>{
-    const value = Number($(id).value);
-
-    if(!Number.isFinite(value) || value<0 || (id==="goal" && value<1)) {
-      alert("اكتب رقمًا صحيحًا.");
-      render();
+  function renderIncomes() {
+    const list = $("incomeList");
+    if (!data.incomes.length) {
+      list.innerHTML = '<div class="empty">لسه مفيش دخل مسجل.</div>';
       return;
     }
 
-    data[id] = value;
-    render();
-  });
-});
-
-window.exportCSV = function() {
-  const lines = [
-    ["نوع السجل","اليوم والتاريخ","رقم/مصدر","ملاحظة","هدف النظام","فعلي النظام","هدف الميني","فعلي الميني","المبلغ"]
-  ];
-
-  data.days.forEach((d,i)=>{
-    lines.push([
-      "متابعة يومية",
-      dateLabel(d.date),
-      "",
-      "",
-      getSystemTarget(d.date,i),
-      num(d.systemActual),
-      scheduledCount(d.date),
-      completedCount(d.date),
-      num(d.systemActual)*num(data.systemProfit)+completedCount(d.date)*num(data.miniProfit)
-    ]);
-  });
-
-  data.schedule.forEach(item=>{
-    lines.push([
-      "ميني باك",
-      dateLabel(item.date),
-      item.phone,
-      item.fire ? "🔥" : "",
-      "",
-      "",
-      1,
-      item.done ? 1 : 0,
-      item.done ? num(data.miniProfit) : 0
-    ]);
-  });
-
-  data.extraIncome.forEach(item=>{
-    lines.push([
-      "دخل إضافي",
-      item.date,
-      item.source,
-      "",
-      "",
-      "",
-      "",
-      "",
-      item.amount
-    ]);
-  });
-
-  lines.push(["إجمالي المكسب","","","","","","","",totalProfit()]);
-  lines.push(["الهدف","","","","","","","",data.goal]);
-
-  const csv = "\uFEFF"+lines.map(row=>
-    row.map(value=>`"${String(value).replace(/"/g,'""')}"`).join(",")
-  ).join("\r\n");
-
-  const blob = new Blob([csv],{type:"text/csv;charset=utf-8;"});
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = "ahmed-shokr-tracker.csv";
-  document.body.appendChild(a);
-  a.click();
-  a.remove();
-  setTimeout(()=>URL.revokeObjectURL(url),1000);
-};
-
-window.copySummary = async function() {
-  const total = totalProfit();
-  const remaining = num(data.goal)-total;
-
-  const txt =
-`متابعة هدف أحمد شكر
-بداية الخطة: ${dateLabel(START_DATE)}
-مكسب خصم النظام: ${money(data.days.reduce((s,d)=>s+num(d.systemActual),0)*num(data.systemProfit))}
-مكسب الميني باك: ${money(data.schedule.filter(x=>x.done).length*num(data.miniProfit))}
-الدخل الإضافي: ${money(extraIncomeTotal())}
-إجمالي المكسب: ${money(total)}
-الهدف: ${money(data.goal)}
-${remaining>0 ? "المتبقي: "+money(remaining) : "الزيادة عن الهدف: "+money(-remaining)}`;
-
-  try {
-    await navigator.clipboard.writeText(txt);
-    alert("تم نسخ الملخص.");
-  } catch(e) {
-    prompt("انسخ الملخص:",txt);
+    list.innerHTML = [...data.incomes].reverse().map(item => `
+      <div class="row">
+        <div>
+          <strong>${escapeHTML(item.type)}</strong>
+          <small>${escapeHTML(item.date || "")}</small>
+          <small>${escapeHTML(item.note || "بدون ملاحظات")}</small>
+          <button class="danger delete-btn" data-delete-income="${escapeHTML(item.id)}">حذف الدخل</button>
+        </div>
+        <div class="amount green">${money(item.amount)}</div>
+      </div>
+    `).join("");
   }
-};
 
-window.resetData = function() {
-  if(!confirm("سيتم مسح عمليات المتابعة والدخل الإضافي وحالات تنفيذ الميني باك. متأكد؟")) return;
-  data = defaultData();
+  function renderExpenses() {
+    $("expenseTotal").textContent = money(expensesTotal());
+
+    const list = $("expenseList");
+    if (!data.expenses.length) {
+      list.innerHTML = '<div class="empty">لسه مفيش مصاريف مسجلة.</div>';
+      return;
+    }
+
+    list.innerHTML = [...data.expenses].reverse().map(item => `
+      <div class="row">
+        <div>
+          <strong>${escapeHTML(item.type)}</strong>
+          <small>${escapeHTML(item.date || "")}</small>
+          <small>${escapeHTML(item.note || "بدون ملاحظات")}</small>
+          <button class="danger delete-btn" data-delete-expense="${escapeHTML(item.id)}">حذف المصروف</button>
+        </div>
+        <div class="amount red">− ${money(item.amount)}</div>
+      </div>
+    `).join("");
+  }
+
+  function render() {
+    const gross = incomeTotal();
+    const expenses = expensesTotal();
+    const net = netProfit();
+    const pct = percent();
+
+    $("goalView").textContent = money(data.goal);
+    $("grossView").textContent = money(gross);
+    $("expenseView").textContent = money(expenses);
+    $("netView").textContent = money(net);
+    $("remainingView").textContent = money(remaining());
+    $("percentView").textContent = pct.toFixed(1) + "%";
+    $("goalInput").value = data.goal;
+    $("progressBar").style.width = pct + "%";
+    $("progressText").textContent = `حققت ${pct.toFixed(1)}% من الهدف بصافي ${money(net)}.`;
+
+    $("summary").textContent = [
+      "ملخص Ahmed Shokr Goal Tracker",
+      "------------------------------",
+      `الهدف المالي: ${money(data.goal)}`,
+      `إجمالي الدخل قبل المصاريف: ${money(gross)}`,
+      `إجمالي المصاريف: ${money(expenses)}`,
+      `صافي المكسب بعد المصاريف: ${money(net)}`,
+      `المتبقي من الهدف: ${money(remaining())}`,
+      `نسبة الإنجاز: ${pct.toFixed(1)}%`,
+      `عدد عمليات الدخل: ${data.incomes.length}`,
+      `عدد المصاريف: ${data.expenses.length}`
+    ].join("\n");
+
+    renderIncomes();
+    renderExpenses();
+  }
+
+  $("incomeDate").value = today();
+  $("expenseDate").value = today();
+
+  $("incomeForm").addEventListener("submit", event => {
+    event.preventDefault();
+    const amount = Number($("incomeAmount").value);
+    if (!Number.isFinite(amount) || amount <= 0) {
+      alert("اكتب مبلغ دخل صحيح أكبر من صفر.");
+      return;
+    }
+
+    data.incomes.push({
+      id: crypto.randomUUID ? crypto.randomUUID() : String(Date.now()) + Math.random(),
+      type: $("incomeType").value,
+      amount,
+      date: $("incomeDate").value || today(),
+      note: $("incomeNote").value.trim()
+    });
+
+    if (saveData()) {
+      $("incomeAmount").value = "";
+      $("incomeNote").value = "";
+      render();
+    }
+  });
+
+  $("expenseForm").addEventListener("submit", event => {
+    event.preventDefault();
+    const amount = Number($("expenseAmount").value);
+    if (!Number.isFinite(amount) || amount <= 0) {
+      alert("اكتب مبلغ مصروف صحيح أكبر من صفر.");
+      return;
+    }
+
+    data.expenses.push({
+      id: crypto.randomUUID ? crypto.randomUUID() : String(Date.now()) + Math.random(),
+      type: $("expenseType").value,
+      amount,
+      date: $("expenseDate").value || today(),
+      note: $("expenseNote").value.trim()
+    });
+
+    if (saveData()) {
+      $("expenseAmount").value = "";
+      $("expenseNote").value = "";
+      render();
+    }
+  });
+
+  $("saveGoalBtn").addEventListener("click", () => {
+    const goal = Number($("goalInput").value);
+    if (!Number.isFinite(goal) || goal <= 0) {
+      alert("اكتب هدفًا أكبر من صفر.");
+      return;
+    }
+    data.goal = goal;
+    if (saveData()) render();
+  });
+
+  $("incomeList").addEventListener("click", event => {
+    const button = event.target.closest("[data-delete-income]");
+    if (!button) return;
+    const id = button.dataset.deleteIncome;
+    if (!confirm("متأكد إنك عايز تحذف عملية الدخل دي؟")) return;
+    data.incomes = data.incomes.filter(item => String(item.id) !== id);
+    if (saveData()) render();
+  });
+
+  $("expenseList").addEventListener("click", event => {
+    const button = event.target.closest("[data-delete-expense]");
+    if (!button) return;
+    const id = button.dataset.deleteExpense;
+    if (!confirm("متأكد إنك عايز تحذف المصروف ده؟")) return;
+    data.expenses = data.expenses.filter(item => String(item.id) !== id);
+    if (saveData()) render();
+  });
+
+  $("copyBtn").addEventListener("click", async () => {
+    const text = $("summary").textContent;
+    try {
+      await navigator.clipboard.writeText(text);
+      alert("تم نسخ الملخص.");
+    } catch {
+      const area = document.createElement("textarea");
+      area.value = text;
+      document.body.appendChild(area);
+      area.select();
+      const ok = document.execCommand("copy");
+      area.remove();
+      alert(ok ? "تم نسخ الملخص." : "انسخ الملخص يدويًا.");
+    }
+  });
+
+  $("exportBtn").addEventListener("click", () => {
+    const rows = [["النوع", "التصنيف", "المبلغ", "التاريخ", "ملاحظات"]];
+    data.incomes.forEach(item => rows.push([
+      "دخل", item.type, item.amount, item.date, item.note || ""
+    ]));
+    data.expenses.forEach(item => rows.push([
+      "مصروف", item.type, -Number(item.amount), item.date, item.note || ""
+    ]));
+
+    rows.push([]);
+    rows.push(["", "إجمالي الدخل", incomeTotal(), "", ""]);
+    rows.push(["", "إجمالي المصاريف", -expensesTotal(), "", ""]);
+    rows.push(["", "صافي المكسب", netProfit(), "", ""]);
+
+    const csv = "\uFEFF" + rows.map(row =>
+      row.map(value => `"${String(value ?? "").replace(/"/g, '""')}"`).join(",")
+    ).join("\r\n");
+
+    const blob = new Blob([csv], {type: "text/csv;charset=utf-8"});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "ahmed-shokr-goal-tracker.csv";
+    a.click();
+    URL.revokeObjectURL(url);
+  });
+
+  $("backupBtn").addEventListener("click", () => {
+    const blob = new Blob([JSON.stringify(data, null, 2)], {type: "application/json"});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "ahmed-shokr-goal-backup.json";
+    a.click();
+    URL.revokeObjectURL(url);
+  });
+
+  $("importBtn").addEventListener("click", () => $("backupFile").click());
+
+  $("backupFile").addEventListener("change", async event => {
+    const file = event.target.files[0];
+    if (!file) return;
+    try {
+      const imported = JSON.parse(await file.text());
+      if (!imported || typeof imported !== "object" ||
+          !Array.isArray(imported.incomes) || !Array.isArray(imported.expenses)) {
+        throw new Error("صيغة النسخة الاحتياطية غير صحيحة.");
+      }
+      if (!confirm("استيراد النسخة هيستبدل البيانات الحالية. تكمل؟")) return;
+
+      data = {
+        goal: Number(imported.goal) > 0 ? Number(imported.goal) : 11500,
+        incomes: imported.incomes,
+        expenses: imported.expenses
+      };
+      if (saveData()) render();
+      alert("تم استيراد النسخة الاحتياطية.");
+    } catch (error) {
+      alert("تعذر استيراد الملف. تأكد إنه نسخة احتياطية صحيحة.");
+    } finally {
+      event.target.value = "";
+    }
+  });
+
+  $("resetBtn").addEventListener("click", () => {
+    if (!confirm("تحذير: ده هيمسح كل عمليات الدخل والمصاريف والهدف المحفوظ على الجهاز. هل أنت متأكد؟")) return;
+    data = newData();
+    if (saveData()) render();
+  });
+
   render();
-};
-
-$("extraDate").value = localDateString(new Date());
-render();
+})();
 </script>
 </body>
 </html>
